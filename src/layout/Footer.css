@@ -1,0 +1,7 @@
+footer{
+  background-color: #273238;
+  color: white;
+  width: 100%;
+  padding: 30px 0;
+  /* flex를 사용할땐 푸터에 높이를 주지 않는다 */
+}
