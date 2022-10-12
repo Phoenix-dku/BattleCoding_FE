@@ -5,3 +5,19 @@
 .navbar-brand{
   color: white;
 }
+
+.navbar-brand:hover{
+  color: white;
+}
+
+.nav-link{
+  color: white;
+}
+
+.nav-link:hover{
+  color: #f2f2f2;
+}
+
+.loginsignup{
+  margin-left: auto;
+}
