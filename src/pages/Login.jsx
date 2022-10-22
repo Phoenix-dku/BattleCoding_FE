@@ -1,6 +1,7 @@
 import { Container, Form, Button } from "react-bootstrap";
 import { useState } from "react";
 import './Login.css'
+import axios from "axios";
 
 export default function Login(){
   const [m_loginId, setId] = useState("");
@@ -19,12 +20,38 @@ export default function Login(){
     setPassword(currentPassword);
   }
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await axios({
+      method: "post",
+      url: "login",
+      data: {
+        m_loginId : m_loginId,
+        m_password: m_password,
+        },
+      }).then((res)=>{
+        console.log(res)
+        if(res.data.response === 'success'){
+          alert('로그인되었습니다.')
+          window.location.replace('/')
+          sessionStorage.setItem("id",m_loginId)
+          sessionStorage.setItem("login", "true")
+          localStorage.setItem("id",m_loginId)
+          localStorage.setItem("login","true")
+        }else if(res.data.response === 'id'){
+          setIdMessage("아이디가 틀렸습니다.")
+        }else if(res.data.response === 'password'){
+          setPasswordMessage("비밀번호가 틀렸습니다.")
+        }
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+  };
+
   return(
-    <div>
-      <Container className="bannername">
-        로그인
-      </Container>
-      <Form className='logintype'>
+    <div className="logincontainer">
+      <Form className='logintype' onSubmit={handleSubmit}>
         <Form.Group className='mb-3' controlId='formBasicId'>
           <Form.Label>아이디</Form.Label>
           <Form.Control required value={m_loginId} onChange={loginId} type="text" placeholder='아이디를 입력하세요' />

@@ -73,7 +73,7 @@ li{
 
 
 .matchcontainer{
-  max-width: 100%;
+  width: 100%;
   padding-left: 0;
   padding-right: 0;
 }
@@ -84,4 +84,59 @@ li{
 
 .cm-theme-light{
   border-top: 1px solid;
+}
+
+.tab-content{
+  height: 37%;
+}
+
+.runbtn{
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #44576c;
+  --bs-btn-border-color: #44576c;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #44576c;
+  --bs-btn-hover-border-color: #44576c;
+  --bs-btn-focus-shadow-rgb: 49,132,253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #44576c;
+  --bs-btn-active-border-color: #44576c;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #44576c;
+  --bs-btn-disabled-border-color: #44576c;
+}
+
+.codebox, .problem-box{
+  display: block;
+}
+
+.codebox{
+  max-width: 620px;
+  border-left: 0;
+}
+
+#resizebar-hor{
+  display: block;
+  border: 1px solid;
+  width: 1px;
+  height: auto;
+  position: relative;
+  box-sizing: border-box;
+  width: 3px;
+  cursor: col-resize;
+}
+
+#resizebar-ver{
+  display: block;
+  border: 1px solid;
+  height: 10px;
+  cursor: row-resize;
+}
+
+
+
+.runbtn, .submitbtn{
+  font-size: 12px;
+  height: 30px;
 }

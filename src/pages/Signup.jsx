@@ -5,7 +5,8 @@ import axios from "axios";
 import './Signup.css'
 
 export default function Signup(){
-  const [m_name, setName] = useState("");
+
+  const [m_loginId, setLoginId] = useState("");
   const [m_password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
@@ -13,11 +14,12 @@ export default function Signup(){
   const navigate = useNavigate();
 
   // 메시지
-  const [nameMessage, setNameMessage] = useState("")
+  const [idMessage, setIdMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
 
   // 유효성 검사
+  const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   
@@ -29,13 +31,14 @@ export default function Signup(){
     event.preventDefault();
     await axios({
       method: "post",
-      url: "/member/new",
+      url: "/signup",
       data: {
-        m_name : m_name,
-        m_password: m_password,
+        loginId : m_loginId,
+        password: m_password,
         },
       }).then((res)=>{
-        if(res.data.response === 'success'){
+        console.log(res.status)
+        if(res.status === 200){
           alert('회원가입 되었습니다.')
           navigate('/')
         }else{
@@ -47,20 +50,20 @@ export default function Signup(){
       })
   };
 
+  const onChangeId = (e) => {
+    const currentId = e.target.value;
+    setLoginId(currentId);
+    const idRegExp = /^[a-zA-z0-9]{4,12}$/;
 
-  /**
-   *  이름 입력 
-   */
-  const onChangeName = (e) => {
-    const currentName = e.target.value;
-    setName(currentName);
-    if(m_name.length === 0){
-      setNameMessage("이름을 한 글자 이상 적어주세요")
-    } else{
-      setNameMessage("이름을 적었습니다.")
+    if (!idRegExp.test(currentId)) {
+      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
+      setIsId(false);
+    } else {
+      setIdMessage("중복 확인을 눌러주세요.");
     }
-  }
-  console.log(m_name)
+  };
+
+
 
 
   /**
@@ -101,12 +104,13 @@ export default function Signup(){
     <div>
       <Form className='signtype'onSubmit={handleSubmit}>
         <h2>회원가입</h2><br/>
-        <Form.Group className="mb-3" controlId="formBasicName">
-            <Form.Label>이름</Form.Label>
-            <Form.Control required value={m_name} onChange={onChangeName} type="text" placeholder="이름을 입력하세요" />
-            <Form.Text className='name'>
-              {nameMessage}
-            </Form.Text>
+
+        <Form.Group className="mb-3" id='id' controlId="formBasicID">
+          <Form.Label>아이디</Form.Label>
+          <Form.Control required value={m_loginId} onChange={onChangeId} type="text" placeholder="아이디를 입력하세요." />
+          <Form.Text className='id'>
+            {idMessage}
+          </Form.Text>
         </Form.Group>
         
         <Form.Group className="mb-3" controlId="formBasicPassword">

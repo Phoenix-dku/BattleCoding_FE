@@ -1,6 +1,19 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import Invite from "../components/Invite";
 import './Home.css'
+
+
 export default function Home(){
+  const [isInvite, setIsInvite] = useState(true);
+
+
+  useEffect(()=>{
+    axios.get("/home").then((res)=>{
+      console.log(res.data)
+    })
+  },[])
   return(
     <Container>
       <Container className="pvptable">
@@ -16,7 +29,7 @@ export default function Home(){
           </li>
         </ul>
       </Container>
-
+      {isInvite ? <Invite/>: ""}
     </Container>
   )
 }

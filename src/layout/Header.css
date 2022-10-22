@@ -1,5 +1,9 @@
 .navbar{
   background-color: #273238;
+  --bs-navbar-disabled-color: white;
+  --bs-navbar-active-color: white;
+  --bs-navbar-brand-color: #f2f2f2
+  --bs-navbar-brand-hover-color: #f2f2f2;
 }
 
 .navbar-brand{

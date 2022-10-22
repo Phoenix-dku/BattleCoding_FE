@@ -1,9 +1,9 @@
 import { Container, Nav, Navbar, NavbarBrand, Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import './Header.css'
 
-export function LoginHeader(){
+export function LoginHeader(props){
   return(
     <Nav>
       <Nav.Link href="/mypage">마이페이지</Nav.Link>
@@ -27,9 +27,19 @@ export function LogoutHeader(){
 
 
 export default function Header(){
-  const params = useParams()
-  console.log(params)
+  const params = useParams();
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+
+  const onClickMatch = (e) => {
+    // e.preventDefault();
+    // if(sessionStorage.getItem("id") === null){
+    //   navigate("/login")
+    //   console.log("hi")
+    // }
+  }
+
+
   return(
     <Navbar>
       <Container>
@@ -37,8 +47,7 @@ export default function Header(){
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href={'/match/'+params.language}>Match</Nav.Link>
-            
+            <Nav.Link onClick={onClickMatch} href={'/match/'+params.language}>Match</Nav.Link>
           </Nav>
           {isLogin ? <LoginHeader isLogin={isLogin}/>: <LogoutHeader/>}
         </Navbar.Collapse>
