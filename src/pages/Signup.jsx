@@ -59,7 +59,7 @@ export default function Signup(){
       setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
       setIsId(false);
     } else {
-      setIdMessage("중복 확인을 눌러주세요.");
+      setIdMessage("");
     }
   };
 

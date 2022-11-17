@@ -7,37 +7,67 @@ import { java } from "@codemirror/lang-java";
 import Codemirror from "@uiw/react-codemirror";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import './Match.css'
 import axios from "axios";
-
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import Loading from "../components/Loading";
 
 export default function Match(){
-  const {language}  = useParams();
+  const params = useParams();
   const matchlang = ["Python3", "Java", "C++", "Javascript"];
   const [currentLang, setCurrentLang] = useState("Java");
   const [code, setCode] = useState("");
-  const [testResult, setTestResult] = useState("")
-  const [consoleMessage, setConsoleMessage] = useState("")
+  const [problemId, setProblemId] = useState("");
+  const [testResult, setTestResult] = useState("");
+  const [consoleMessage, setConsoleMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const mousedown = (e) => {
-
-  }
-  const mousemove = (e) => {
-
-  }
-
-  const mouseup = (e) => {
-
-  }
-
+  console.log(params)
   const resizeBox = () => {
     console.log(`박스 사이즈 x: ${window.innerWidth}, y: ${window.innerHeight}`)
   }
 
+  const client = new Client({
+    brokerURL: 'ws://58.234.91.119:8080/ws',
+    debug: function(str){
+      console.log(str)
+    },
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  })
+
+  client.webSocketFactory = function () {
+    return new SockJS("/stomp")
+  }
+
+  client.onConnect = function (frame){
+    console.log(frame)
+    console.log('success')
+    alert('접속되었습니다!')
+  }
+
+  client.onStompError = function (frame) {
+    console.log('Broker reported error: ' + frame.headers['message']);
+    console.log('Additional details: ' + frame.body);
+  }
+
+  const getProblem = async(e) =>{
+    await axios({
+      method: 'get',
+      url: '/match/'+params.matchId + '/problem'
+    }).then((res)=>{
+      console.log(res.data)
+    })
+  }
+
   useEffect(()=>{
     window.addEventListener('resize', resizeBox)
-  })
+    getProblem();
+    client.activate();
+  },[])
 
 
   const onChange = useCallback((value, viewUpdate)=>{
@@ -45,9 +75,8 @@ export default function Match(){
     console.log("value:",value);
   },[])
   console.log(code)
-
   
-  const onClickSubmission = async(e) => {
+  const onClickRunCode = async(e) => {
     e.preventDefault();
     await axios({
       method: 'post',
@@ -56,7 +85,7 @@ export default function Match(){
         'Content-Type': 'application/json'
       },
       data:{
-        problemId: 1,
+        problemId: problemId,
         code: code
       }
     }).then((res)=>{
@@ -68,9 +97,30 @@ export default function Match(){
     
   }
 
+  const onClickSubmission = async(e) =>{
+    await axios({
+      method: 'post',
+      url: '/match/save',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data:{
+        problemId: problemId,
+        code: code
+      }
+    }).then((res)=>{
+      // if(window.confirm('정말로 제출하시겠습니까?') === true){
+      //   navigate('/matchresult')
+      // }
+      client.deactivate();
+      console.log(res)
+    })
+  }
+
   //파람스 사용해서 리다이렉트로 바꿔야하는듯
   return (
-    <Container className="matchcontainer">
+    <>
+      {loading ? <Loading></Loading>: <Container className="matchcontainer">
       <ul className="matchbar">
         <li className="problem-title">
           문제 이름
@@ -127,12 +177,14 @@ export default function Match(){
               
             </Tab>
           </Tabs>
-          <Button className="runbtn">코드 실행하기</Button>
-          <Button className="submitbtn" onClick={onClickSubmission}>제출</Button>
+          <Button className="runbtn" onClick={onClickRunCode}>코드 실행하기</Button>
+          <Button className="submitbtn" onClick={onClickSubmission} >제출</Button>
         </Col>
       </Row>
       
       
-    </Container>
+    </Container>}
+    </>
+    
   )
 }

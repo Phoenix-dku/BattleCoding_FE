@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import './Mypage.css'
+import UserInfo from "./UserInfo";
 
 export default function Mypage(){
   return(
@@ -46,6 +47,9 @@ export default function Mypage(){
           </aside>
         </Col>
         <Col xs={9} md={9} lg={9}>
+          <Routes>
+            <Route path="/*" element={<UserInfo/>}/>
+          </Routes>
         </Col>
       </Row>
       </Container>

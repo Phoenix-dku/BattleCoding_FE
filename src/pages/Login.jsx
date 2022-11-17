@@ -24,25 +24,27 @@ export default function Login(){
     event.preventDefault();
     await axios({
       method: "post",
-      url: "login",
+      url: "/login",
+      headers:{
+        'Content-Type': 'application/json'
+      },
       data: {
-        m_loginId : m_loginId,
-        m_password: m_password,
+        loginId : m_loginId,
+        password: m_password,
         },
       }).then((res)=>{
         console.log(res)
-        if(res.data.response === 'success'){
+        if(res.data === "로그인 성공"){
           alert('로그인되었습니다.')
           window.location.replace('/')
           sessionStorage.setItem("id",m_loginId)
           sessionStorage.setItem("login", "true")
           localStorage.setItem("id",m_loginId)
           localStorage.setItem("login","true")
-        }else if(res.data.response === 'id'){
-          setIdMessage("아이디가 틀렸습니다.")
-        }else if(res.data.response === 'password'){
-          setPasswordMessage("비밀번호가 틀렸습니다.")
+        }else if(res.data ==="로그인 실패"){
+          alert(res.data)
         }
+        
       })
       .catch((error)=>{
         console.log(error)
@@ -55,7 +57,7 @@ export default function Login(){
         <Form.Group className='mb-3' controlId='formBasicId'>
           <Form.Label>아이디</Form.Label>
           <Form.Control required value={m_loginId} onChange={loginId} type="text" placeholder='아이디를 입력하세요' />
-          <Form.Text className='name'>{idMessage}</Form.Text>
+          <Form.Text className='idmessage'>{idMessage}</Form.Text>
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>비밀번호</Form.Label>

@@ -2,12 +2,13 @@
   "name": "dku_capstone2_frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://125.6.38.129",
+  "proxy": "http://58.234.91.119:8080",
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.1",
     "@codemirror/lang-java": "^6.0.0",
     "@codemirror/lang-javascript": "^6.1.0",
     "@codemirror/lang-python": "^6.0.2",
+    "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -22,6 +23,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "sockjs-client": "^1.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

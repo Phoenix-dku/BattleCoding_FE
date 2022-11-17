@@ -1,13 +1,28 @@
 import { Container, Nav, Navbar, NavbarBrand, Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './Header.css'
+import axios from "axios";
 
 export function LoginHeader(props){
+  const logoutHandler = async(e) => {
+    await axios({
+      method: 'post',
+      url: '/logout',
+    }).then((res)=>{
+      localStorage.clear()
+      sessionStorage.clear()
+      alert('로그아웃되었습니다.')
+      window.location.replace('/')
+      console.log(res)
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }
   return(
     <Nav>
       <Nav.Link href="/mypage">마이페이지</Nav.Link>
-      <Button>
+      <Button id='logoutbtn' onClick={logoutHandler}>
         로그아웃
       </Button>
     </Nav>
@@ -31,6 +46,13 @@ export default function Header(){
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
 
+  useEffect(()=>{
+    if(sessionStorage.getItem('id') === null){
+      setIsLogin(false);
+    }else{
+      setIsLogin(true)
+    }
+  })
   const onClickMatch = (e) => {
     // e.preventDefault();
     // if(sessionStorage.getItem("id") === null){

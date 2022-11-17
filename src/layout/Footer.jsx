@@ -5,7 +5,9 @@ export default function Footer(){
   return (
     <footer className='footer'>
       <Container>
-        이기성
+        frontend : 이기성 
+        <br/>
+        backend : 김도현 김지홍 최규현
       </Container>
     </footer>
   )

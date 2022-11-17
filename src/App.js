@@ -9,6 +9,7 @@ import Signup from './pages/Signup';
 import Match from './pages/Match';
 import Mypage from './pages/mypage/Mypage';
 import NotFound from './pages/NotFound';
+import MatchResult from './pages/MatchResult';
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login />}/>
           <Route path='/signup' element={<Signup/>}/>
-          <Route path='/match/:language' element={<Match/>}/>
+          <Route path='/match/:matchId/:problemId' element={<Match/>}/>
           <Route path='/mypage' element={<Mypage/>}/>
+          <Route path='/matchresult' element={<MatchResult/>}/>
           <Route path='/*' element={<NotFound/>}/>
         </Routes>
       </div>
